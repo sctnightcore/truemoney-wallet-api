@@ -1,4 +1,4 @@
-import requests, json
+import requests, json, hashlib, time
 
 class Wallet:
 
@@ -37,6 +37,9 @@ class Wallet:
             print("Logging in..")
         self.session = requests.session()
         resp = self.session.post(self.HOST + self.LOGIN_PATH, data={"email": email, "password": password})
+        self.username = email
+        self.password = hashlib.sha1((email+password).encode("utf-8")).hexdigest()
+        self.accessToken = self.fetchToken()
         if resp.status_code != 200:
             raise Exception("Wrong email or password")
         if showLoginMessage:
@@ -45,10 +48,16 @@ class Wallet:
     """SERVER"""
 
     def fetchProfile(self):
-        return json.loads(self.session.get(self.HOST + self.PROFILE_DETAIL_PATH).text)
+        return json.loads(self.session.post("https://api-ewm.truemoney.com/api/v1/signin?device_os=android&device_id=d520d0d12d0d48cb89394905168c6ed5&device_type=CPH1611&device_version=6.0.1&app_name=wallet&app_version=4.0.1", headers={"Contant-Type": "application/json"}, json={"username": self.username, "password": self.password, "type": "email", "deviceToken": "fUUbZJ9nwBk:APA91bHHgBBHhP9rqBEon_BtUNz3rLHQ-sYXnezA10PRSWQTwFpMvC9QiFzh-CqPsbWEd6x409ATC5RVsHAfk_-14cSqVdGzhn8iX2K_DiNHvpYfMMIzvFx_YWpYj5OaEzMyIPh3mgtx", "mobileTracking": "dJyFzn\/GIq7lrjv2RCsZbphpp0L\/W2+PsOTtOpg352mgWrt4XAEAAA=="}).text)
 
     def fetchProfileImageURL(self):
         return self.session.get(self.HOST + self.PROFILE_IMAGE_DETAIL_PATH).text
+
+    def fetchToken(self):
+        return json.loads(self.session.post("https://api-ewm.truemoney.com/api/v1/signin?device_os=android&device_id=d520d0d12d0d48cb89394905168c6ed5&device_type=CPH1611&device_version=6.0.1&app_name=wallet&app_version=4.0.1", headers={"Contant-Type": "application/json"}, json={"username": self.username, "password": self.password, "type": "email", "deviceToken": "fUUbZJ9nwBk:APA91bHHgBBHhP9rqBEon_BtUNz3rLHQ-sYXnezA10PRSWQTwFpMvC9QiFzh-CqPsbWEd6x409ATC5RVsHAfk_-14cSqVdGzhn8iX2K_DiNHvpYfMMIzvFx_YWpYj5OaEzMyIPh3mgtx", "mobileTracking": "dJyFzn\/GIq7lrjv2RCsZbphpp0L\/W2+PsOTtOpg352mgWrt4XAEAAA=="}).text)["data"]["accessToken"]
+
+    def cashcardTopUp(self, cashcard):
+        return json.loads(self.session.post("https://api-ewm.truemoney.com/api/api/v1/topup/mobile/%s/%s/cashcard/%s" % (str(int(time.time())), self.accessToken, cashcard)).text)
 
     def requestTransfer(self, mobileNumber, amount, message=""):
         return json.loads(self.session.post(self.HOST + self.TRANSFER_REQUEST_PATH, data={"mobileNumber": mobileNumber, "amount": str(amount), "message": message}).text)
@@ -221,3 +230,6 @@ class Wallet:
 
     def getTransactionPersonalMessage(self, transactionDetail):
         return transactionDetail["data"]["personalMessage"]["value"]
+
+    def getToken(self, profile):
+        return profile["data"]["accessToken"]

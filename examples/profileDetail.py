@@ -6,12 +6,12 @@ wallet = Wallet("email","password",showLoginMessage=True)
 
 profile = wallet.fetchProfile()
 
-fullname = "%s %s" % (profile["title"],profile["fullname"])
-email = profile["email"]
-thaiID = profile["thaiID"]
-mobileNumber = profile["mobileNumber"]
-balance = profile["balance"]
-dateOfBirth = "%s/%s/%s" % (profile["dateOfBirth"][-2:],profile["dateOfBirth"][4:6],profile["dateOfBirth"][:4])
+fullname = "%s %s" % (profile["data"]["title"],profile["data"]["fullname"])
+email = profile["data"]["email"]
+thaiID = profile["data"]["thaiId"]
+mobileNumber = profile["data"]["mobileNumber"]
+balance = round(float(profile["data"]["currentBalance"]),2)
+dateOfBirth = "%s/%s/%s" % (profile["data"]["birthdate"][-2:],profile["data"]["birthdate"][4:6],profile["data"]["birthdate"][:4])
 
 profileImage = wallet.fetchProfileImageURL()
 
