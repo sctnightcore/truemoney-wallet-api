@@ -27,6 +27,15 @@ Fetch your profile image URL by using `self.fetchProfileImageURL()` (return type
     profileImageURL = wallet.fetchProfileImageURL()
     print(profileImageURL)
 
+Fetch your accessToken by using `self.fetchToken()` (return type = `str`)
+
+    accessToken = self.fetchToken()
+    print(accessToken)
+
+Use cashcard to topup by using `self.cashcardTopUp(cashcard)` (return type = `dict`)
+
+    wallet.cashcardTopUp("97596183625657")
+
 Transfer your money (request) by using `self.requestTransfer(mobileNumber, amount, message="")` (return type = `dict`)
 
     wallet.requestTransfer("0812345678", 5, "Sent from Python 3")
@@ -115,6 +124,7 @@ Available functions
     self.getTransactionServiceType(transactionDetail)
     self.getTransactionServiceCode(transactionDetail)
     self.getTransactionPersonalMessage(transactionDetail)
+    self.getToken(profile)
 
 # Author
 
