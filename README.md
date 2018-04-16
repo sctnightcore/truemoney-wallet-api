@@ -73,7 +73,7 @@ Enable WeCard by using `self.enableWeCard(cardId)` (return type = `dict`)
 
     wallet.enableWeCard("111111111111111111")
 
-Disable WeCard by using `self.enableWeCard(cardId)` (return type = `dict`)
+Disable WeCard by using `self.disableWeCard(cardId)` (return type = `dict`)
 
     wallet.disableWeCard("111111111111111111")
 
