@@ -8,5 +8,5 @@ print()
 
 wallet.requestBuyTrueMoneyCard("0812345678",50)
 otpString = input("OTP: ")
-resp = wallet.confirmBuyTrueMoneyCard(otpString)
+wallet.confirmBuyTrueMoneyCard(otpString)
 print()
