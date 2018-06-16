@@ -29,7 +29,7 @@ Fetch your profile image URL by using `self.fetchProfileImageURL()` (return type
 
 Fetch your accessToken by using `self.fetchToken()` (return type = `str`)
 
-    accessToken = self.fetchToken()
+    accessToken = wallet.fetchToken()
     print(accessToken)
 
 Use cashcard to topup by using `self.cashcardTopUp(cashcard)` (return type = `dict`)
